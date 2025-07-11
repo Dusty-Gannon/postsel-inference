@@ -1,0 +1,16 @@
+---
+title: "Valid post-selection inference: Have your cake and eat it, too."
+authors:
+  - name: Dustin G. Gannon
+    affiliation: Forest Ecosystems and Society, Oregon State University
+    roles: writing
+    corresponding: true
+bibliography: references.bib
+---
+
+## Abstract
+
+<!-- Intro file -->
+
+{{< include _sections/01_intro.qmd >}}
+
