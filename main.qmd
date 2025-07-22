@@ -14,3 +14,12 @@ bibliography: references.bib
 
 {{< include _sections/01_intro.qmd >}}
 
+## References
+
+::: {#refs}
+:::
+
+<!-- Appendix 1 -->
+
+{{< include _sections/0X_appendix_theory.qmd >}}
+

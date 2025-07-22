@@ -1,0 +1,56 @@
+
+
+## Introductory theory of post-selection inference in regression problems {.appendix}
+
+Consider an over-simplified example in which we are interested in the relationship between two variables, $X_1$ and $Y$, but expect that $X_2$ may also be related to $Y$. Upon collecting the data, $(y_i, x_{i,1}, x_{i,2})$ for $i = 1,2,...,n$, we fit the regression model
+
+$$
+y_i = \beta_1 x_{i,1} + \beta_2 x_{i,2} + \epsilon_i,
+$$ {#eq-reg-equation}
+
+where I assume the raw data have been centered and scaled so we can drop the intercept term from the model, and $\epsilon_1, \epsilon_2,...,\epsilon_n$ are assumed to be independent and identically distributed normal random variables with mean of zero and variance of $\sigma^2$. Assuming this statistical model is a suitable model for the generative process (i.e., is the ``true" model), the sampling distribution of the vector of estimated regression coefficients, $\hat {\bm \beta}$, conditional on the observed explanatory variables, is
+$$
+    \hat {\boldsymbol \beta} | {\bf X} \sim \mathcal{N}({\boldsymbol \beta}, \sigma^2({\bf X}^\top {\bf X})^{-1})
+$$
+where $\bm \beta$ is the true value of the regression coefficients and ${\bf X}$ is the model matrix with columns that correspond to the observed values ${\bf x}_1 = (x_{1,1}, x_{2,1}, ..., x_{n,1})^\top$ and ${\bf x}_2 = (x_{1,2}, x_{2,2}, ... , x_{n,2})^\top$, respectively. This sampling distribution represents the distribution of estimates of $\bm \beta$ were the researcher able to repeat the process of collecting $n$ samples from the population of $Y$ using the same values of the explanatory variables in $\bf X$ and refit the regression model infinitely many times. The conditioning on $\bf X$ makes sense in an experimental setting when we are interested in particular values of $\bf X$ (e.g., treatments), but, for the sake of clearer communication in what follows, let's assume instead that the resampling process entails resampling the full data vector, $(y, x_1, x_2)^\top$, $n$ times at random for each resample, and assume that the population for $(X_1, X_2)^\top$ is multivariate normal with mean $\bf 0$ and covariance matrix ${\bm \Sigma}$. Then, it can be shown that the sampling distribution for $\hat \beta$ (averaging over all possible model matrices, $\bf X$) is
+$$
+    \hat {\boldsymbol \beta} \sim \mathcal{N}\left(\boldsymbol{\beta},\  \frac{\sigma^2}{n} {\boldsymbol \Sigma}^{-1}\right).
+$$ {#eq-sample-dist-beta}
+
+This distribution represents the distribution of estimates for $\bm \beta$, were we able to repeat the sampling process infinitely many times. However, assume now that the researcher wishes to remove the explanatory variable $X_2$ if they fail to reject the null hypothesis that $\beta_2 = 0$ at level $\alpha$. What are the consequences of this adjustment to the modeling process?
+
+Revisiting the regression equation (@eq-reg-equation) but removing $X_2$ from the list of explanatory variables, we instead fit the model
+\begin{equation*}
+    y_i = x_{i,1}\beta_1 + \nu_i
+\end{equation*}
+where $\nu_i = x_{i,2} \beta_2 + \epsilon_i$, but we ignore this and assume $\nu_i$ is random noise. Then,
+\begin{equation*}
+    {\hat \beta_1}' = ({\bf x}_1^\top {\bf x}_1)^{-1}{\bf x}_1^\top {\bf y} = \frac{\sum_i x_{i,1}y_i}{\sum_i x_{i,1}^2}
+\end{equation*}
+and
+$$
+    \begin{aligned}
+        \mathbb{E}({\hat \beta_1}') &= \mathbb{E}\left(\frac{1}{\sum_i x_{i,1}^2} \sum_i x_{i,1}y_i \right) \\ 
+        &= \mathbb{E}\left(\frac{1}{\sum_i x_{i,1}^2} \sum_i x_{i,1}(x_{i,1}\beta_1 + \nu_i) \right)\\
+        &= \mathbb{E}\left(\beta_1 + \frac{\sum_i x_{i,1}\nu_i}{\sum_i x_{i,1}^2} \right) \\
+        &= \mathbb{E}\left(\beta_1 + \frac{\sum_i x_{i,1}(x_{i,2}\beta_2 + \epsilon_i)}{\sum_i x_{1_i}^2} \right) \\
+        &= \beta_1 + \rho_{x_1 x_2}\beta_2
+    \end{aligned}
+$$ {#eq-omi-bias}
+where, because the data are standardized,
+$$
+    \rho_{x_1 x_2} = \frac{\sum_i x_{i,1}x_{i,2}}{\sum_{i}x_{i,1}^2}
+$$
+is the correlation between $X_1$ and $X_2$ (when data are not standardized, $\rho_{x_1 x_2}$ represents the regression coefficient when regressing ${\bf x}_1$ on ${\bf x}_2$). From this, we can see that, if $X_1$ and $X_2$ are correlated (i.e., ${\bm \Sigma}_{1,2} = {\bm \Sigma}_{2,1} \ne 0$) \textit{and} $X_2$ is also related to $Y$ (i.e., $\beta_2 \ne 0$), then the estimate for $\beta_1$ ``absorbs" some of the variation in $Y$ that should be attributed to $X_2$. Thus, we may end up with a biased estimate of $\beta_1$ when excluding $X_2$ from the model. This is called *omission bias* or *omitted variable bias*.
+
+Now, if we imagine repeating this process many times by first sampling from the population, then fitting the full regression model (@eq-reg-equation), then either: 1) dropping $X_2$ from the model if we fail to reject the null hypothesis that $\beta_2 = 0$ based on the estimates from the full model; or 2) using the estimates from the full model if we can reject the null hypothesis that $\beta_2 = 0$, we can see that the sampling distribution of $\hat \beta_1$ has become more complex. Specifically, from (@eq-omi-bias) we can see that the sampling distribution will be a mixture of two distributions and dependent on the probability that we drop $X_2$ from the model using the criteria above. Letting $\omega$ be the power of the test of the null hypotheses that $\beta_2 = 0$ at level $\alpha$, then the sampling distribution of ${\hat \beta}_1$ will be
+$$
+    f(\hat \beta) = 
+    \begin{cases}
+        \mathcal{N}\left(\beta_1,\ \sigma^2 / \Sigma_{1,1}\right) & \text{w.p. } \omega\\
+        \mathcal{N}\left(\beta_1 + \rho_{x_1x_2},\ \sigma^2 / \Sigma_{1,1} + \beta_2^2 \frac{\Sigma_{2,2}}{\Sigma_{1,1}}\right) & \text{w.p } (1 - \omega)
+    \end{cases}
+$$
+While computing a $p$-value based on this new sampling distribution is not impossible, clearly the complexity of the sampling distribution has increase substantially even for this simplified example. Deriving the sampling distribution for the estimate of interest, $\hat \beta_1$, under more complex model selection processes and / or more complex models is challenging at best. 
+
+ It is my goal to illustrate the ideas behind the simple double-selection procedure developed by @belloni_dsel_2014 for inference on focal variables after selecting among control variables as I expect this approach may be unfamiliar to many ecologists, despite the familiarity of the modeling scenario. 
