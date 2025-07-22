@@ -25,3 +25,6 @@ _manuscript/*
 
 # rendered html files
 _sections/*.html
+
+# Other rendered materials
+_sections/*_files/libs/*
