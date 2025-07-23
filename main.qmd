@@ -10,6 +10,9 @@ bibliography: references.bib
 
 ## Abstract
 
+<!-- Outline and notes -->
+{{< include _sections/00_outline_ideas.qmd >}}
+
 <!-- Intro file -->
 
 {{< include _sections/01_intro.qmd >}}
