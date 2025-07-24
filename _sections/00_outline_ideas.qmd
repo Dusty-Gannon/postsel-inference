@@ -5,7 +5,7 @@
 
 ### Philosophical questions
 
-- *Submodel* versus *full model* view.
+- *Submodel* views.
 
     - @berk_valid_psi_2013 takes the *submodel view*. 
     
@@ -15,6 +15,16 @@
         
         - Definition of the estimator is: $\mathbb{E}(\hat{\boldsymbol \beta}_m) = \underset{{\boldsymbol \beta} \in \mathbb{R}^\mathcal{P}}{\text{arg min}} ||\boldsymbol \mu - {\bf X}_m \boldsymbol \beta ||^2$ where $\boldsymbol \mu$ is the true mean $\mathbb{E}(\bf Y)$, $\mathcal{P}$ is the dimension of the "full model" matrix, and $m$ denotes the submodel.
         
+    - @lee_exact_psi_2016
+    
+        - Inference conditional on the selected model
+        
+        - Conditional sampling distribution is truncated normal
+        
 
 - Taylor and Tibshirani (2016) - L1-penalized likelihood models (GLMs with LASSO)
 
+
+- *Full model* views
+
+    - @zhang_CIs_2014 take full model view
